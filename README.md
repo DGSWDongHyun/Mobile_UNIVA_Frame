@@ -3,7 +3,7 @@
 
 아래는 활용된 기술 스택입니다.
 
-- Jetpack Compose ( 젯팩 컴포즈 )
+- Jetpack Compose ( 젯팩 컴포즈 )\n
   -> 더 이상 xml과 Kotlin을 각각 이용할 필요가 없습니다.
   -> 최근 선언형 프로그래밍이 유행하기 때문에 채택하였습니다. ( ex. Flutter / Swift UI )
 - MVVM
