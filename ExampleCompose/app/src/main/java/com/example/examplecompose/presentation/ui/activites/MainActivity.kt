@@ -49,7 +49,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.examplecompose.R
-import com.example.examplecompose.data.bus.remote.dto.BusStopInfo
+import com.example.examplecompose.domain.bus.entity.BusStopInfoEntity
 import com.example.examplecompose.presentation.ui.theme.ExampleComposeTheme
 import com.example.examplecompose.presentation.ui.viewmodel.activities.MainViewModel
 import com.example.examplecompose.presentation.util.STATUS
@@ -175,7 +175,7 @@ fun requestGPSLocationPermission(permissionListener: PermissionListener) {
 
 
 @Composable
-fun BusStationItem(bus: BusStopInfo) {
+fun BusStationItem(bus: BusStopInfoEntity) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.location_icon)
     )

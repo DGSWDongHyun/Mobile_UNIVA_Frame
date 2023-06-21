@@ -1,7 +1,12 @@
 package com.example.examplecompose.domain.bus.entity
 
+import com.example.examplecompose.data.bus.remote.dto.BusStopResponse
+import com.example.examplecompose.data.bus.remote.dto.BusStopResponseEntity
 import com.google.gson.annotations.SerializedName
 
+data class BusStopResEntity(
+    val res : BusStopEntity? = null,
+)
 data class BusStopEntity(
     val header : HeaderEntity,
     val body : BodyEntity?
@@ -31,4 +36,22 @@ data class BusStopInfoEntity(
     val nodeId: String?,
     val nodeName: String?,
     val nodeNumber : Int?,
-);
+)
+
+fun toMapping(busStop : BusStopResponse?) = BusStopResEntity(res = BusStopEntity(
+    header = HeaderEntity(resultCode = busStop?.header?.resultCode, resultMessage = busStop?.header?.resultMessage),
+    body = BodyEntity(items =
+        ItemEntity(item = busStop?.body?.items?.item?.map
+            { it -> BusStopInfoEntity(
+                cityCode = it.cityCode,
+                gpsLatitude = it.gpsLatitude,
+                gpsLongitude = it.gpsLongitude,
+                nodeId = it.nodeId,
+                nodeName = it.nodeName,
+                nodeNumber = it.nodeNumber)
+            })
+        , numberOfRows = busStop?.body?.numberOfRows,
+        pageNumber = busStop?.body?.pageNumber,
+        totalCount = busStop?.body?.totalCount
+    )
+))

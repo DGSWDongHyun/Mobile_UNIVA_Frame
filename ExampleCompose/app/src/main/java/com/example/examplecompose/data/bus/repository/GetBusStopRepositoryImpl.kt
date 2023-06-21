@@ -5,6 +5,8 @@ import com.example.examplecompose.data.bus.remote.dto.BusStopResponse
 import com.example.examplecompose.data.bus.remote.api.GetBusStopService
 import com.example.examplecompose.data.bus.remote.dto.BusStopResponseEntity
 import com.example.examplecompose.domain.bus.GetBusStopRepository
+import com.example.examplecompose.domain.bus.entity.BusStopResEntity
+import com.example.examplecompose.domain.bus.entity.toMapping
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.ResponseBody
@@ -18,7 +20,7 @@ class GetBusStopRepositoryImpl @Inject constructor(private val service : GetBusS
         numberRows: Int,
         gpsLatitude: Double,
         gpsLongitude: Double
-    ): BusStopResponseEntity {
-        return service.getBusStop(pageNumber = pageNumber, numberRows = numberRows, gpsLatitude = gpsLatitude, gpsLongitude = gpsLongitude)
+    ): BusStopResEntity {
+        return toMapping(service.getBusStop(pageNumber = pageNumber, numberRows = numberRows, gpsLatitude = gpsLatitude, gpsLongitude = gpsLongitude).res)
     }
 }
