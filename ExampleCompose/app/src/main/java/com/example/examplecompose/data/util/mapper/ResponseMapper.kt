@@ -11,16 +11,16 @@ import com.example.examplecompose.domain.bus.entity.ItemEntity
 fun BusStopResponse?.toMapping() = BusStopResEntity(res = BusStopEntity(
     header = HeaderEntity(resultCode = this?.header?.resultCode, resultMessage = this?.header?.resultMessage),
     body = BodyEntity(items =
-    ItemEntity(item = this?.body?.items?.item?.map
-    { it -> BusStopInfoEntity(
-        cityCode = it.cityCode,
-        gpsLatitude = it.gpsLatitude,
-        gpsLongitude = it.gpsLongitude,
-        nodeId = it.nodeId,
-        nodeName = it.nodeName,
-        nodeNumber = it.nodeNumber)
-    })
-        ,numberOfRows = this?.body?.numberOfRows,
+    ItemEntity(item = this?.body?.items?.item?.map { it ->
+        BusStopInfoEntity(
+            cityCode = it.cityCode,
+            gpsLatitude = it.gpsLatitude,
+            gpsLongitude = it.gpsLongitude,
+            nodeId = it.nodeId,
+            nodeName = it.nodeName,
+            nodeNumber = it.nodeNumber)
+        }),
+        numberOfRows = this?.body?.numberOfRows,
         pageNumber = this?.body?.pageNumber,
         totalCount = this?.body?.totalCount
     ))
