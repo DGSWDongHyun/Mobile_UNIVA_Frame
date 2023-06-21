@@ -37,21 +37,3 @@ data class BusStopInfoEntity(
     val nodeName: String?,
     val nodeNumber : Int?,
 )
-
-fun toMapping(busStop : BusStopResponse?) = BusStopResEntity(res = BusStopEntity(
-    header = HeaderEntity(resultCode = busStop?.header?.resultCode, resultMessage = busStop?.header?.resultMessage),
-    body = BodyEntity(items =
-        ItemEntity(item = busStop?.body?.items?.item?.map
-            { it -> BusStopInfoEntity(
-                cityCode = it.cityCode,
-                gpsLatitude = it.gpsLatitude,
-                gpsLongitude = it.gpsLongitude,
-                nodeId = it.nodeId,
-                nodeName = it.nodeName,
-                nodeNumber = it.nodeNumber)
-            })
-        , numberOfRows = busStop?.body?.numberOfRows,
-        pageNumber = busStop?.body?.pageNumber,
-        totalCount = busStop?.body?.totalCount
-    )
-))
