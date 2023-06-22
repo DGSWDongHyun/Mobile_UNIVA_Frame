@@ -50,6 +50,7 @@ import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.examplecompose.R
 import com.example.examplecompose.domain.bus.entity.BusStopInfoEntity
+import com.example.examplecompose.presentation.base.BaseActivity
 import com.example.examplecompose.presentation.ui.theme.ExampleComposeTheme
 import com.example.examplecompose.presentation.ui.viewmodel.activities.MainViewModel
 import com.example.examplecompose.presentation.util.STATUS
@@ -61,8 +62,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    private val viewModel: MainViewModel by viewModels()
+class MainActivity : BaseActivity<MainViewModel>() {
+
+    override val viewModel: MainViewModel by viewModels()
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private var permissionListener: PermissionListener = object : PermissionListener {
@@ -79,83 +82,81 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val list = remember { viewModel.listOfBusStation }
-            val statusLoading = remember { viewModel.stateOfLoading }
+    @Composable
+    override fun OnViewCreated() {
+        val list = remember { viewModel.listOfBusStation }
+        val statusLoading = remember { viewModel.stateOfLoading }
 
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-            requestGPSLocationPermission(permissionListener)
+        requestGPSLocationPermission(permissionListener)
 
-            ExampleComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+        ExampleComposeTheme {
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    contentPadding = PaddingValues(16.dp, 8.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        contentPadding = PaddingValues(16.dp, 8.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
 
-                        if (statusLoading.value == STATUS.LOADING) {
-                            item {
-                                CircularProgressIndicator()
-                                Box(modifier = Modifier.height(20.dp))
-                            }
-                        } else {
-                            items(
-                                items = list,
-                                itemContent = { BusStationItem(it) }
-                            )
-                        }
-
+                    if (statusLoading.value == STATUS.LOADING) {
                         item {
-                            PaddingValues(bottom = 10.dp)
-                            Box(
-                                modifier = Modifier
-                                    .width(200.dp)
-                                    .height(50.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Button(
-                                    onClick = {
-                                        if (ActivityCompat.checkSelfPermission(
-                                                this@MainActivity,
-                                                Manifest.permission.ACCESS_FINE_LOCATION
-                                            ) != PackageManager.PERMISSION_GRANTED
-                                            && ActivityCompat.checkSelfPermission(
-                                                this@MainActivity,
-                                                Manifest.permission.ACCESS_COARSE_LOCATION
-                                            ) != PackageManager.PERMISSION_GRANTED
-                                        ) {
-                                            requestGPSLocationPermission(permissionListener)
-                                        } else {
-                                            fusedLocationClient.lastLocation
-                                                .addOnSuccessListener { location: Location? ->
-                                                    if (location != null) {
-                                                        viewModel.getBusStopInit(
-                                                            location.latitude,
-                                                            location.longitude
-                                                        )
-                                                    } else {
-                                                        Toast.makeText(
-                                                            this@MainActivity,
-                                                            "위치 정보를 가져올 수 없습니다.",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    }
+                            CircularProgressIndicator()
+                            Box(modifier = Modifier.height(20.dp))
+                        }
+                    } else {
+                        items(
+                            items = list,
+                            itemContent = { BusStationItem(it) }
+                        )
+                    }
+
+                    item {
+                        PaddingValues(bottom = 10.dp)
+                        Box(
+                            modifier = Modifier
+                                .width(200.dp)
+                                .height(50.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Button(
+                                onClick = {
+                                    if (ActivityCompat.checkSelfPermission(
+                                            this@MainActivity,
+                                            Manifest.permission.ACCESS_FINE_LOCATION
+                                        ) != PackageManager.PERMISSION_GRANTED
+                                        && ActivityCompat.checkSelfPermission(
+                                            this@MainActivity,
+                                            Manifest.permission.ACCESS_COARSE_LOCATION
+                                        ) != PackageManager.PERMISSION_GRANTED
+                                    ) {
+                                        requestGPSLocationPermission(permissionListener)
+                                    } else {
+                                        fusedLocationClient.lastLocation
+                                            .addOnSuccessListener { location: Location? ->
+                                                if (location != null) {
+                                                    viewModel.getBusStopInit(
+                                                        location.latitude,
+                                                        location.longitude
+                                                    )
+                                                } else {
+                                                    Toast.makeText(
+                                                        this@MainActivity,
+                                                        "위치 정보를 가져올 수 없습니다.",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
                                                 }
-                                        }
-                                    }) {
-                                    Text(text = "API 호출")
-                                }
+                                            }
+                                    }
+                                }) {
+                                Text(text = "API 호출")
                             }
                         }
                     }
@@ -179,10 +180,10 @@ fun BusStationItem(bus: BusStopInfoEntity) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.location_icon)
     )
-    val lottieAnimatable = rememberLottieAnimatable()
+    val lottieAnimation = rememberLottieAnimatable()
 
     LaunchedEffect(composition) {
-        lottieAnimatable.animate(
+        lottieAnimation.animate(
             composition = composition,
             clipSpec = LottieClipSpec.Frame(0, 1200),
             initialProgress = 0f
@@ -205,7 +206,7 @@ fun BusStationItem(bus: BusStopInfoEntity) {
             Row(Modifier.padding(16.dp, 8.dp)) {
                 Column{
                     Text(text = bus.nodeName ?: "")
-                    Text(text = "${bus.cityCode}")
+                    Text(text = "${bus.nodeId}")
                 }
             }
         }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() { // Android -> Application과 유사한 코드 구성
   final dependencyController = DependencyController();
 
   runApp(MyApp(dependencyController: dependencyController,));
