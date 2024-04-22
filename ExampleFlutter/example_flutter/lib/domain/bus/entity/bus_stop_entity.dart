@@ -1,14 +1,12 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../data/bus/remote/dto/bus_stop_response.dart';
-
 part 'bus_stop_entity.g.dart';
 
 @JsonSerializable()
 class BusStopResEntity {
   @JsonKey(name: "response")
-  final BusStopResponse? res;
+  final BusStopRes? res;
 
   BusStopResEntity({this.res});
 

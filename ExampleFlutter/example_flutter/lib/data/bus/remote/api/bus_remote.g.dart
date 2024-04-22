@@ -29,7 +29,7 @@ class _BusStopRemote implements BusStopRemote {
     double gpsLongitude,
     String returnType,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'serviceKey': key,
       r'pageNo': pageNum,
@@ -39,7 +39,7 @@ class _BusStopRemote implements BusStopRemote {
       r'_type': returnType,
     };
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<BusStopResponseEntity>(Options(
       method: 'GET',

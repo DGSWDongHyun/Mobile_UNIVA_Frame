@@ -10,7 +10,7 @@ BusStopResEntity _$BusStopResEntityFromJson(Map<String, dynamic> json) =>
     BusStopResEntity(
       res: json['response'] == null
           ? null
-          : BusStopResponse.fromJson(json['response'] as Map<String, dynamic>),
+          : BusStopRes.fromJson(json['response'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$BusStopResEntityToJson(BusStopResEntity instance) =>
