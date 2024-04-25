@@ -4,10 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:example_flutter/data/util/wrapper/response_wrapper.dart';
 import 'package:example_flutter/domain/bus/entity/bus_stop_entity.dart';
 import 'package:example_flutter/domain/bus/usecase/bus_stop_usecase.dart';
+import 'package:example_flutter/presentation/base/base_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
-class HomeViewModel extends ChangeNotifier {
+class HomeViewModel extends BaseViewModel {
   final Dio dio;
   final BusStopUseCase busStopUseCase;
 
@@ -64,4 +65,7 @@ class HomeViewModel extends ChangeNotifier {
 
     onGrantedPermission();
   }
+
+  @override
+  void onDisposed() { }
 }

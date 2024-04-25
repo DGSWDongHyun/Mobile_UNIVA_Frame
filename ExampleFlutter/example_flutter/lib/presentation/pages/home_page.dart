@@ -25,16 +25,16 @@ class MyHomePage extends BaseStatelessWidget<HomeViewModel> {
   HomeViewModel viewModel(BuildContext context) => Provider.of<HomeViewModel>(context, listen: false);
 
   @override
-  void initState(BuildContext context) { }
+  void initState(BuildContext context, HomeViewModel viewModel) { }
 
   @override
-  void rebuildState(BuildContext context) {
+  void rebuildState(BuildContext context, HomeViewModel viewModel) {
     listOfBusStop = context.watch<HomeViewModel>().listOfBusStopInfo;
     busInfoLoading = context.watch<HomeViewModel>().loadingBusInfo;
   }
 
   @override
-  Widget viewBuilder(BuildContext context) {
+  Widget viewBuilder(BuildContext context, HomeViewModel viewModel) {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -47,8 +47,8 @@ class MyHomePage extends BaseStatelessWidget<HomeViewModel> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await viewModel(context).handleLocationPermission(onGrantedPermission : () async {
-          await viewModel(context).getBusStopInfo(1, 10);
+        onPressed: () async => await viewModel.handleLocationPermission(onGrantedPermission : () async {
+          await viewModel.getBusStopInfo(1, 10);
         }, onDeniedPermission: () {
           showSnackBar(context, '권한이 거부되었습니다. [설정] -> [권한]에서 권한 허용을 진행해주세요.');
         }, onDisabledService: () {
