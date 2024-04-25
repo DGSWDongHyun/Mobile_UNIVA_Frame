@@ -26,6 +26,8 @@ abstract class BaseStatelessWidget<T extends BaseViewModel> extends StatelessWid
   *
   * - isInit은 상태관리에 해당하므로, 해당 파트도 ViewModel 파트로 이전시킴
   * - 또한 initState에서 addPostFrameCallback으로 Context를 정상적으로 받은 이후에 콜백으로 받은 initState를 실행시킴.
+  * - Android Google Architecture 중에서 SingleActivity Architecture ( SAA )를 지향하는 아키텍쳐.
+  * - 따라서 Fragment의 개념이 포함되는 경우에는 부모 Widget의 ViewModel을 넘겨주는 것이 이상적인 방법.
   */
 
   void initState(BuildContext context, T viewModel);
